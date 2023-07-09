@@ -1,18 +1,8 @@
 import pandas as pd
 import time
-from datetime import datetime
 import requests
 from urllib.parse import quote
 from bs4 import BeautifulSoup
-import sys
-
-
-search_query = sys.argv[1]
-
-if search_query == None:
-    search_query = ''
-
-BASE_URL = 'https://www.newegg.ca/p/pl?d='
 
 
 class NeweggScraper:
@@ -71,14 +61,4 @@ class NeweggScraper:
         newegg_df['Current Price'] = newegg_df['Current Price'].str.replace(r'[^0-9 \.]+', '', regex=True)
         
         return newegg_df
-    
-def extract_data(query):
-    scraper = NeweggScraper(BASE_URL, query)
-    df = scraper.paginated_scrape(3)
-    cur_date = datetime.now()
-    df.to_csv(f'{cur_date.year}-{cur_date.month}-{cur_date.day}-{query}.csv',index=False)
-
-if __name__ == '__main__':
-    extract_data(search_query)
-
 
